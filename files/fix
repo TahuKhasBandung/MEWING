@@ -1,0 +1,16 @@
+#!/bin/bash
+iser=$(cat /root/.isp)
+if [[ $iser -gt 0 ]]; then
+curl "ipinfo.io/org?token=daa5b5ba4f4b3c
+" > /root/.isp
+else
+echo ""
+fi
+
+iser1=$(cat /root/.city)
+if [[ $iser -gt 0 ]]; then
+curl "ipinfo.io/city?token=daa5b5ba4f4b3c
+" > /root/.city
+else
+echo ""
+fi

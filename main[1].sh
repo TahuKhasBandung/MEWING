@@ -29,7 +29,7 @@ echo -e " WELCOME TO ZXTORE SCRIPT ${BLUE}(${NC}${green}Stable Edition${NC}${BLU
 echo -e " PROSES PENGECEKAN IP ADDRESS ANDA !!"
 echo -e "${purple}----------------------------------------------------------${NC}"
 echo -e " ›AUTHOR : ${green} ZXTORE ® ${NC}${BLUE}(${NC}${green}V 0.0${NC}${BLUE})${NC}"
-echo -e " ›TEAM : ZERO STORE ${BLUE}(${NC} 2024 ${BLUE})${NC}"
+echo -e " ›TEAM : T1 ${BLUE}(${NC} 2024 ${BLUE})${NC}"
 echo -e "${BLUE}----------------------------------------------------------${NC}"
 echo ""
 sleep 2
@@ -82,7 +82,7 @@ gem install lolcat
 apt install wondershaper -y
 clear
 # REPO    
-    REPO="https://raw.githubusercontent.com/rxztore/MEWING/main/"
+    REPO="https://raw.githubusercontent.com/TahuKhasBandung/MEWING/main/"
 
 ####
 start=$(date +%s)
@@ -179,7 +179,7 @@ else
 fi
 }
 
-# rxztore
+# TahuKhasBandung
 clear
 function nginx_install() {
     # // Checking System
@@ -238,7 +238,7 @@ clear
 echo -e "   |\e[1;32mPlease Select a Domain Type Below \e[0m|"
 echo -e "   '----------------------------------'"
 echo -e "     \e[1;32m1)\e[0m Menggunakan Domain Sendiri"
-echo -e "     \e[1;32m2)\e[0m Menggunakan Domain Script"
+echo -e "     \e[1;32m2)\e[0m Menggunakan Domain Acak"
 echo -e "   ------------------------------------"
 read -p "   Please select numbers 1-2 or Any Button(Random) : " host
 echo ""
@@ -269,7 +269,7 @@ curl "ipinfo.io/city?token=7a814b6263b02c" > /root/.city
 MYIP=$(curl -sS ipv4.icanhazip.com)
 echo -e "\e[32mloading...\e[0m" 
 clear
-izinsc="https://raw.githubusercontent.com/rxztore/zta/permission/"
+izinsc="https://raw.githubusercontent.com/TahuKhasBandung/ijin/permission/"
 # USERNAME
 rm -f /usr/bin/user
 username=$(curl $izinsc | grep $MYIP | awk '{print $2}')
@@ -326,7 +326,7 @@ TIMEZONE=$(printf '%(%H:%M:%S)T')
 <code>Time     :</code><code>$TIMEZONE</code>
 <code>Exp Sc.  :</code><code>$exp</code>
 <code>────────────────────</code>
-<b> ZERO STORE VVIP SCRIPT  </b>
+<b>              ZXSTORE  </b>
 <code>────────────────────</code>
 <i>Notifications From ZXSTORE</i>
 "'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"t.me/RiivKiii"}]]}' 
@@ -536,7 +536,7 @@ print_success "Password SSH"
 function udp_mini(){
 clear
 print_install "Memasang Service Limit IP & Quota"
-wget -q https://raw.githubusercontent.com/rxztore/MEWING/main/config/fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
+wget -q https://raw.githubusercontent.com/TahuKhasBandung/MEWING/main/config/fv-tunnel && chmod +x fv-tunnel && ./fv-tunnel
 
 # // Installing UDP Mini
 mkdir -p /usr/local/kyt/

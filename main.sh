@@ -25,11 +25,11 @@ clear;clear;clear
 
   # // Banner
 echo -e "${BLUE}----------------------------------------------------------${NC}"
-echo -e " WELCOME TO ZXTORE SCRIPT ${BLUE}(${NC}${green}Stable Edition${NC}${BLUE})${NC}"
+echo -e " WELCOME TO DarkMonkey ${BLUE}(${NC}${green}Beta Edition${NC}${BLUE})${NC}"
 echo -e " PROSES PENGECEKAN IP ADDRESS ANDA !!"
 echo -e "${purple}----------------------------------------------------------${NC}"
-echo -e " ›AUTHOR : ${green} ZXTORE ® ${NC}${BLUE}(${NC}${green}V 0.0${NC}${BLUE})${NC}"
-echo -e " ›TEAM : T1 ${BLUE}(${NC} 2024 ${BLUE})${NC}"
+echo -e " ›AUTHOR : ${green} DarkMonkey ® ${NC}${BLUE}(${NC}${green}V 0.0${NC}${BLUE})${NC}"
+echo -e " ›TEAM : DarkMonkey ${BLUE}(${NC} 2019 ${BLUE})${NC}"
 echo -e "${BLUE}----------------------------------------------------------${NC}"
 echo ""
 sleep 2
@@ -82,7 +82,7 @@ gem install lolcat
 apt install wondershaper -y
 clear
 # REPO    
-    REPO="https://raw.githubusercontent.com/TahuKhasBandung/MEWING/main/main.sh"
+    REPO="https://raw.githubusercontent.com/TahuKhasBandung/MEWING/main/"
 
 ####
 start=$(date +%s)
@@ -179,7 +179,7 @@ else
 fi
 }
 
-# TahuKhasBandung
+# DarkMonkey
 clear
 function nginx_install() {
     # // Checking System
@@ -238,7 +238,7 @@ clear
 echo -e "   |\e[1;32mPlease Select a Domain Type Below \e[0m|"
 echo -e "   '----------------------------------'"
 echo -e "     \e[1;32m1)\e[0m Menggunakan Domain Sendiri"
-echo -e "     \e[1;32m2)\e[0m Menggunakan Domain Acak"
+echo -e "     \e[1;32m2)\e[0m Menggunakan Domain Script"
 echo -e "   ------------------------------------"
 read -p "   Please select numbers 1-2 or Any Button(Random) : " host
 echo ""
@@ -269,7 +269,7 @@ curl "ipinfo.io/city?token=7a814b6263b02c" > /root/.city
 MYIP=$(curl -sS ipv4.icanhazip.com)
 echo -e "\e[32mloading...\e[0m" 
 clear
-izinsc="https://raw.githubusercontent.com/TahuKhasBandung/zta/permission/"
+izinsc="https://raw.githubusercontent.com/TahuKhasBandung/zta/main/permission"
 # USERNAME
 rm -f /usr/bin/user
 username=$(curl $izinsc | grep $MYIP | awk '{print $2}')
@@ -305,8 +305,8 @@ else
 sts="${Error}"
 fi
 TIMES="10"
-CHATID="1622204396"
-KEY="7856000033:AAESNp_SFimVOL3RILu5ZXMIP9ejpjL3v9s"
+CHATID="7155167948"
+KEY="7371331952:AAHU5cdYCvVsG0B83J-_J1KbtD6vfAruzD4"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 ISP=$(cat /root/.isp)
 CITY=$(cat /root/.city)
@@ -326,10 +326,10 @@ TIMEZONE=$(printf '%(%H:%M:%S)T')
 <code>Time     :</code><code>$TIMEZONE</code>
 <code>Exp Sc.  :</code><code>$exp</code>
 <code>────────────────────</code>
-<b>              ZXSTORE  </b>
+<b> DarkMonkey  </b>
 <code>────────────────────</code>
-<i>Notifications From ZXSTORE</i>
-"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"t.me/RiivKiii"}]]}' 
+<i>Notifications From DarkMonkey</i>
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"t.me/rannv"}]]}' 
 
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
@@ -1013,7 +1013,7 @@ echo ""
 echo ""
 echo "------------------------------------------------------------"
 echo ""
-echo "===============-[ SCRIPT BY ZXSTORE ]-==============="
+echo "===============-[ SCRIPT BY DarkMonkey ]-==============="
 echo -e ""
 echo ""
 echo "" | tee -a log-install.txt

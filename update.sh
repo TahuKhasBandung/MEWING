@@ -41,7 +41,7 @@ res1() {
 netfilter-persistent
 clear
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat
-echo -e " \e[1;97;101m            UPDATE SCRIPT BY ZXSTORE               \e[0m"
+echo -e " \e[1;97;101m   UPDATE Script Please reboot              \e[0m"
 echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat
 echo -e ""
 echo -e "  \033[1;91m Update Script Service\033[1;37m"

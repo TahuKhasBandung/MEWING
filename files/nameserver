@@ -4,7 +4,7 @@ ns_domain_cloudflare() {
 	DOMAIN="ranntunnel.my.id"
 	DOMAIN_PATH=$(cat /etc/xray/domain)
 	SUB=$(tr </dev/urandom -dc a-z0-9 | head -c7)
-	SUB_DOMAIN=${SUB}."zerooostore.my.id"
+	SUB_DOMAIN=${SUB}."ranntunnel.my.id"
 	NS_DOMAIN=ns.${SUB_DOMAIN}
 	CF_ID=arvi27642@gmail.com
         CF_KEY=9988fafe5731af04f47bd9f9c2f73e4347fed

@@ -33,7 +33,7 @@ red() { echo -e "\\033[32;1m${*}\\033[0m"; }
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/TahuKhasBandung/permision/main/permission"
+data_ip="https://raw.githubusercontent.com/TahuKhasBandung/permision/main/permision"
 checking_sc() {
   useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
   if [[ $date_list < $useexp ]]; then

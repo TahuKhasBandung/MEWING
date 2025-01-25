@@ -25,10 +25,10 @@ clear;clear;clear
 
   # // Banner
 echo -e "${BLUE}----------------------------------------------------------${NC}"
-echo -e " WELCOME TO RIRI SCRIPT ${BLUE}(${NC}${green}BETA TEST${NC}${BLUE})${NC}"
+echo -e " WELCOME TO RIRI STORE SCRIPT ${BLUE}(${NC}${green}BETA Edition${NC}${BLUE})${NC}"
 echo -e " PROSES PENGECEKAN IP ADDRESS ANDA !!"
 echo -e "${BLUE}----------------------------------------------------------${NC}"
-echo -e " ›AUTHOR : ${green} RIRI STORE ® ${NC}${BLUE}(${NC}${green}V 0.1{NC}${BLUE})${NC}"
+echo -e " ›AUTHOR : ${green} RIRI STORE ® ${NC}${BLUE}(${NC}${green}V 0.0${NC}${BLUE})${NC}"
 echo -e " ›TEAM : RIRI STORE ${BLUE}(${NC} 2024 ${BLUE})${NC}"
 echo -e "${BLUE}----------------------------------------------------------${NC}"
 echo ""
@@ -264,8 +264,8 @@ clear
 #GANTI PASSWORD DEFAULT
 restart_system(){
 #IZIN SCRIPT
-curl "ipinfo.io/org?token=8704ac9cf99c0a" > /root/.isp 
-curl "ipinfo.io/city?token=8704ac9cf99c0a" > /root/.city
+curl "ipinfo.io/org?token=f209571547ff6b" > /root/.isp 
+curl "ipinfo.io/city?token=f209571547ff6b" > /root/.city
 MYIP=$(curl -sS ipv4.icanhazip.com)
 echo -e "\e[32mloading...\e[0m" 
 clear
@@ -326,9 +326,10 @@ TIMEZONE=$(printf '%(%H:%M:%S)T')
 <code>Time     :</code><code>$TIMEZONE</code>
 <code>Exp Sc.  :</code><code>$exp</code>
 <code>────────────────────</code>
-<b> RIRI STORE VVIP SCRIPT  </b>
+<b> RIRI STORE  SCRIPT  </b>
 <code>────────────────────</code>
-<i>Notifications From RIRISTORE AutoSc</i> 
+<i>Notifications From RiriStore AutoSc</i>
+"'&reply_markup={"inline_keyboard":[[{"text":"ᴏʀᴅᴇʀ","url":"t.me/riristore"}]]}' 
 
     curl -s --max-time $TIMES -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
 }
@@ -418,7 +419,7 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
     IPVS=$(cat /etc/xray/ipvps)
     print_success "Core Xray 1.8.1 Latest Version"
     
-    # Settings UP Nginx Server
+    # Settings UP Nginix Server
     clear
     curl -s ipinfo.io/city >>/etc/xray/city
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >>/etc/xray/isp
@@ -833,7 +834,7 @@ mesg n || true
 menu
 EOF
 mkdir -p /root/.info
-curl -sS "ipinfo.io/org?token=8704ac9cf99c0a" > /root/.info/.isp
+curl -sS "ipinfo.io/org?token=7a814b6263b02c" > /root/.info/.isp
 cat >/etc/cron.d/xp_all <<-END
 		SHELL=/bin/sh
 		PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin

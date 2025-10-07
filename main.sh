@@ -360,7 +360,7 @@ function make_folder_xray() {
 rm -rf /etc/vmess/.vmess.db
     rm -rf /etc/vless/.vless.db
     rm -rf /etc/trojan/.trojan.db
-    rm -rf /etc/shadowsocks/.shadowsocks.db
+    #rm -rf /etc/shadowsocks/.shadowsocks.db
     rm -rf /etc/ssh/.ssh.db
     rm -rf /etc/bot/.bot.db
     rm -rf /etc/user-create/user.log
@@ -369,7 +369,7 @@ rm -rf /etc/vmess/.vmess.db
     mkdir -p /etc/vmess
     mkdir -p /etc/vless
     mkdir -p /etc/trojan
-    mkdir -p /etc/shadowsocks
+    #mkdir -p /etc/shadowsocks
     mkdir -p /etc/ssh
     mkdir -p /usr/bin/xray/
     mkdir -p /var/log/xray/
@@ -390,13 +390,13 @@ rm -rf /etc/vmess/.vmess.db
     touch /etc/vmess/.vmess.db
     touch /etc/vless/.vless.db
     touch /etc/trojan/.trojan.db
-    touch /etc/shadowsocks/.shadowsocks.db
+    #touch /etc/shadowsocks/.shadowsocks.db
     touch /etc/ssh/.ssh.db
     touch /etc/bot/.bot.db
     echo "& plughin Account" >>/etc/vmess/.vmess.db
     echo "& plughin Account" >>/etc/vless/.vless.db
     echo "& plughin Account" >>/etc/trojan/.trojan.db
-    echo "& plughin Account" >>/etc/shadowsocks/.shadowsocks.db
+    #echo "& plughin Account" >>/etc/shadowsocks/.shadowsocks.db
     echo "& plughin Account" >>/etc/ssh/.ssh.db
     echo "echo -e 'Vps Config User Account'" >> /etc/user-create/user.log
     }
@@ -419,7 +419,7 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
     IPVS=$(cat /etc/xray/ipvps)
     print_success "Core Xray 1.8.1 Latest Version"
     
-    # Settings UP Nginix Server
+    # Settings UP Nginx Server
     clear
     curl -s ipinfo.io/city >>/etc/xray/city
     curl -s ipinfo.io/org | cut -d " " -f 2-10 >>/etc/xray/isp

@@ -179,7 +179,7 @@ else
 fi
 }
 
-# ZERO STORE
+# RIRI STORE
 clear
 function nginx_install() {
     # // Checking System
@@ -765,15 +765,16 @@ apt autoclean -y >/dev/null 2>&1
 apt autoremove -y >/dev/null 2>&1
 print_success "ePro WebSocket Proxy"
 }
-function noobzvpn(){
-clear
-wget "${REPO}/noobzvpns.zip"
-unzip noobzvpns.zip
-bash install.sh
-rm noobzvpns.zip
-systemctl restart noobzvpns
-print_success "NOOBZVPN"
-}
+# function noobzvpn(){
+# clear
+# wget "${REPO}/noobzvpns.zip"
+# unzip noobzvpns.zip
+# bash install.sh
+# rm noobzvpns.zip
+# systemctl restart noobzvpns
+# print_success "NOOBZVPN"
+# }
+
 
 function ins_restart(){
 clear
@@ -820,7 +821,7 @@ function menu(){
     rm -rf menu.zip
 }
 
-# Membaut Default Menu 
+# Membuat Default Menu 
 function profile(){
 clear
     cat >/root/.profile <<EOF
@@ -953,7 +954,6 @@ clear
     ins_swab
     ins_Fail2ban
     ins_epro
-    noobzvpn
     ins_restart
     menu
     profile

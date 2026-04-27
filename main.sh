@@ -305,8 +305,8 @@ else
 sts="${Error}"
 fi
 TIMES="10"
-CHATID="7155167948"
-KEY="7358712144:AAFfwm5hl9wf1f0crhW8QcLpSyAq6y87_pc"
+CHATID="6854954216"
+KEY="8777212825:AAEcP8iMoPnKGb3ylNHbxOJyLGc5r4iFUWo"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 ISP=$(cat /root/.isp)
 CITY=$(cat /root/.city)

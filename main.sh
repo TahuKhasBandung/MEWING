@@ -351,6 +351,13 @@ print_install "Memasang SSL Pada Domain"
     /root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
     /root/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
     ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/xray/xray.crt --keypath /etc/xray/xray.key --ecc
+    
+    # Fallback to self-signed if acme.sh fails
+    if [[ ! -f /etc/xray/xray.crt || ! -s /etc/xray/xray.crt ]]; then
+        echo "ACME failed, generating self-signed certificate..."
+        openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/xray/xray.key -out /etc/xray/xray.crt -subj "/C=ID/ST=West Java/L=Bandung/O=MEWING VPN/CN=$domain"
+    fi
+    
     chmod 777 /etc/xray/xray.key
     print_success "SSL Certificate"
 }
@@ -462,8 +469,7 @@ print_success "Konfigurasi Packet"
 function setup_ssh(){
 clear
 print_install "Memasang Password SSH"
-    wget -O /etc/pam.d/common-password "${REPO}files/password"
-chmod +x /etc/pam.d/common-password
+    # (Removed wget files/password to avoid breaking root password PAM)
 
     DEBIAN_FRONTEND=noninteractive dpkg-reconfigure keyboard-configuration
     debconf-set-selections <<<"keyboard-configuration keyboard-configuration/altgr select The default for the keyboard layout"

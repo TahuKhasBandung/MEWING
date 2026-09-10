@@ -7,7 +7,7 @@ grenbo="\e[92;1m"
 NC='\e[0m'
 #install
 apt update && apt upgrade
-apt install python3 python3-pip git
+apt install python3 python3-pip git -y
 cd /usr/bin
 wget https://raw.githubusercontent.com/TahuKhasBandung/MEWING/main/bot/bot.zip
 unzip bot.zip
@@ -17,7 +17,7 @@ rm -rf bot.zip
 clear
 wget https://raw.githubusercontent.com/TahuKhasBandung/MEWING/main/bot/kyt.zip
 unzip kyt.zip
-pip3 install -r kyt/requirements.txt
+pip3 install --break-system-packages -r kyt/requirements.txt 2>/dev/null || pip3 install -r kyt/requirements.txt
 
 clear
 echo ""

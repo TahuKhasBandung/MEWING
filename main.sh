@@ -37,23 +37,31 @@ sleep 2
 if [[ $( uname -m | awk '{print $1}' ) == "x86_64" ]]; then
     echo -e "${OK} Your Architecture Is Supported ( ${green}$( uname -m )${NC} )"
 else
-    echo -e "${EROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
+    echo -e "${ERROR} Your Architecture Is Not Supported ( ${YELLOW}$( uname -m )${NC} )"
     exit 1
 fi
 
 # // Checking System
-if [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "ubuntu" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
-elif [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "debian" ]]; then
-    echo -e "${OK} Your OS Is Supported ( ${green}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
+export OS_ID=$(. /etc/os-release && echo "$ID")
+export OS_VERSION=$(. /etc/os-release && echo "$VERSION_ID")
+export OS_PRETTY=$(. /etc/os-release && echo "$PRETTY_NAME")
+
+if [[ "$OS_ID" == "ubuntu" ]]; then
+    if [[ "$OS_VERSION" == "22.04" || "$OS_VERSION" == "24.04" ]]; then
+        echo -e "${OK} Your OS Is Supported ( ${green}${OS_PRETTY}${NC} )"
+    else
+        echo -e "${YELLOW}[WARN] Ubuntu $OS_VERSION belum teruji, lanjutkan dengan resiko sendiri${NC}"
+    fi
+elif [[ "$OS_ID" == "debian" ]]; then
+    echo -e "${OK} Your OS Is Supported ( ${green}${OS_PRETTY}${NC} )"
 else
-    echo -e "${EROR} Your OS Is Not Supported ( ${YELLOW}$( cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g' )${NC} )"
+    echo -e "${ERROR} Your OS Is Not Supported ( ${YELLOW}${OS_PRETTY}${NC} )"
     exit 1
 fi
 
 # // IP Address Validating
 if [[ $IP == "" ]]; then
-    echo -e "${EROR} IP Address ( ${YELLOW}Not Detected${NC} )"
+    echo -e "${ERROR} IP Address ( ${YELLOW}Not Detected${NC} )"
 else
     echo -e "${OK} IP Address ( ${green}$IP${NC} )"
 fi
@@ -158,25 +166,11 @@ function first_setup(){
     echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
     echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
     print_success "Directory Xray"
-    if [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "ubuntu" ]]; then
-    echo "Setup Dependencies $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
+    echo "Setup Dependencies ${OS_PRETTY}"
     sudo apt update -y
-    apt-get install --no-install-recommends software-properties-common
-    add-apt-repository ppa:vbernat/haproxy-2.0 -y
-    apt-get -y install haproxy=2.0.\*
-elif [[ $(cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g') == "debian" ]]; then
-    echo "Setup Dependencies For OS Is $(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g')"
-    curl https://haproxy.debian.net/bernat.debian.org.gpg |
-        gpg --dearmor >/usr/share/keyrings/haproxy.debian.net.gpg
-    echo deb "[signed-by=/usr/share/keyrings/haproxy.debian.net.gpg]" \
-        http://haproxy.debian.net buster-backports-1.8 main \
-        >/etc/apt/sources.list.d/haproxy.list
-    sudo apt-get update
-    apt-get -y install haproxy=1.8.\*
-else
-    echo -e " Your OS Is Not Supported ($(cat /etc/os-release | grep -w PRETTY_NAME | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/PRETTY_NAME//g') )"
-    exit 1
-fi
+    apt-get install --no-install-recommends software-properties-common -y
+    # Install HAProxy dari repo default (Ubuntu 22.04=2.4, 24.04=2.8)
+    apt-get -y install haproxy
 }
 
 # RIRI STORE
@@ -201,19 +195,22 @@ function base_package() {
     clear
     ########
     print_install "Menginstall Packet Yang Dibutuhkan"
-    apt install zip pwgen openssl netcat socat cron bash-completion -y
+    apt install zip pwgen openssl netcat-openbsd socat cron bash-completion -y
     apt install figlet -y
     apt update -y
     apt upgrade -y
     apt dist-upgrade -y
-    systemctl enable chronyd
-    systemctl restart chronyd
-    systemctl enable chrony
-    systemctl restart chrony
-    chronyc sourcestats -v
-    chronyc tracking -v
-    apt install ntpdate -y
-    ntpdate pool.ntp.org
+    # Chrony (service bernama 'chrony' di Ubuntu, bukan 'chronyd')
+    systemctl enable chrony 2>/dev/null
+    systemctl restart chrony 2>/dev/null
+    chronyc sourcestats -v 2>/dev/null
+    chronyc tracking -v 2>/dev/null
+    # ntpdate dihapus di Ubuntu 24.04, gunakan chrony sebagai pengganti
+    if apt-cache show ntpdate &>/dev/null; then
+        apt install ntpdate -y 2>/dev/null && ntpdate pool.ntp.org 2>/dev/null
+    else
+        chronyc makestep 2>/dev/null
+    fi
     apt install sudo -y
     apt install ruby -y 
     gem install lolcat
@@ -225,7 +222,7 @@ function base_package() {
     sudo apt-get install -y --no-install-recommends software-properties-common
     echo iptables-persistent iptables-persistent/autosave_v4 boolean true | debconf-set-selections
     echo iptables-persistent iptables-persistent/autosave_v6 boolean true | debconf-set-selections
-    sudo apt-get install -y speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-nss-dev flex bison make libnss3-tools libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev sed dirmngr libxml-parser-perl build-essential gcc g++ python htop lsof tar wget curl ruby zip unzip p7zip-full python3-pip libc6 util-linux build-essential msmtp-mta ca-certificates bsd-mailx iptables iptables-persistent netfilter-persistent net-tools openssl ca-certificates gnupg gnupg2 ca-certificates lsb-release gcc shc make cmake git screen socat xz-utils apt-transport-https gnupg1 dnsutils cron bash-completion ntpdate chrony jq openvpn easy-rsa
+    sudo apt-get install -y speedtest-cli vnstat libnss3-dev libnspr4-dev pkg-config libpam0g-dev libcap-ng-dev libcap-ng-utils libselinux1-dev libcurl4-openssl-dev flex bison make libnss3-tools libevent-dev bc rsyslog dos2unix zlib1g-dev libssl-dev libsqlite3-dev sed dirmngr libxml-parser-perl build-essential gcc g++ python3 python-is-python3 htop lsof tar wget curl ruby zip unzip p7zip-full python3-pip libc6 util-linux msmtp-mta ca-certificates bsd-mailx iptables iptables-persistent netfilter-persistent net-tools openssl gnupg gnupg2 lsb-release make cmake git screen socat xz-utils apt-transport-https dnsutils cron bash-completion chrony jq openvpn easy-rsa
     print_success "Packet Yang Dibutuhkan"
     
 }
@@ -292,7 +289,7 @@ datediff() {
     d2=$(date -d "$2" +%s)
     echo -e "$COLOR1 $NC Expiry In   : $(( (d1 - d2) / 86400 )) Days"
 }
-mai="datediff "$Exp" "$DATE""
+mai="datediff "$exp" "$DATE""
 
 # Status Expired Active
 Info="(${green}Active${NC})"
@@ -305,8 +302,8 @@ else
 sts="${Error}"
 fi
 TIMES="10"
-CHATID="6854954216"
-KEY="8777212825:AAEcP8iMoPnKGb3ylNHbxOJyLGc5r4iFUWo"
+CHATID="YOUR_CHAT_ID"
+KEY="YOUR_BOT_TOKEN"
 URL="https://api.telegram.org/bot$KEY/sendMessage"
 ISP=$(cat /root/.isp)
 CITY=$(cat /root/.city)
@@ -344,7 +341,9 @@ print_install "Memasang SSL Pada Domain"
     STOPWEBSERVER=$(lsof -i:80 | cut -d' ' -f1 | awk 'NR==2 {print $1}')
     rm -rf /root/.acme.sh
     mkdir /root/.acme.sh
-    systemctl stop $STOPWEBSERVER
+    if [ -n "$STOPWEBSERVER" ]; then
+        systemctl stop $STOPWEBSERVER
+    fi
     systemctl stop nginx
     curl https://acme-install.netlify.app/acme.sh -o /root/.acme.sh/acme.sh
     chmod +x /root/.acme.sh/acme.sh
@@ -460,7 +459,7 @@ EOF
 print_success "Konfigurasi Packet"
 }
 
-function ssh(){
+function setup_ssh(){
 clear
 print_install "Memasang Password SSH"
     wget -O /etc/pam.d/common-password "${REPO}files/password"
@@ -509,7 +508,8 @@ END
 cat > /etc/rc.local <<-END
 #!/bin/sh -e
 # rc.local
-# By default this script does nothing.
+# Disable IPv6
+echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 exit 0
 END
 
@@ -522,7 +522,6 @@ systemctl start rc-local.service
 
 # disable ipv6
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 #update
 # set time GMT +7
@@ -598,7 +597,7 @@ print_success "Dropbear"
 function ins_udpSSH(){
 clear
 print_install "Menginstall Udp-custom"
-wget -q http
+wget -q ${REPO}udp-custom.sh -O udp-custom.sh
 chmod +x udp-custom.sh 
 bash udp-custom.sh
 rm -fr udp-custom.sh
@@ -608,23 +607,17 @@ clear
 function ins_vnstat(){
 clear
 print_install "Menginstall Vnstat"
-# setting vnstat
+# Ubuntu 22.04 sudah punya vnstat 2.6+, Ubuntu 24.04 punya 2.10
+# Tidak perlu compile dari source
 apt -y install vnstat > /dev/null 2>&1
-/etc/init.d/vnstat restart
-apt -y install libsqlite3-dev > /dev/null 2>&1
-wget https://humdi.net/vnstat/vnstat-2.6.tar.gz
-tar zxvf vnstat-2.6.tar.gz
-cd vnstat-2.6
-./configure --prefix=/usr --sysconfdir=/etc && make && make install
-cd
-vnstat -u -i $NET
-sed -i 's/Interface "'""eth0""'"/Interface "'""$NET""'"/g' /etc/vnstat.conf
-chown vnstat:vnstat /var/lib/vnstat -R
+# Deteksi network interface utama
+NET=$(ip -4 route ls | grep default | grep -Po '(?<=dev )\S+' | head -1)
+if [ -n "$NET" ] && [ "$NET" != "eth0" ]; then
+    sed -i "s/Interface \"eth0\"/Interface \"$NET\"/g" /etc/vnstat.conf 2>/dev/null
+fi
+chown vnstat:vnstat /var/lib/vnstat -R 2>/dev/null
 systemctl enable vnstat
-/etc/init.d/vnstat restart
-/etc/init.d/vnstat status
-rm -f /root/vnstat-2.6.tar.gz
-rm -rf /root/vnstat-2.6
+systemctl restart vnstat
 print_success "Vnstat"
 }
 
@@ -663,9 +656,9 @@ account default
 host smtp.gmail.com
 port 587
 auth on
-user oceantestdigital@gmail.com
-from oceantestdigital@gmail.com
-password jokerman77 
+user your_email@gmail.com
+from your_email@gmail.com
+password your_app_password 
 logfile ~/.msmtp.log
 EOF
 chown -R www-data:www-data /etc/msmtprc
@@ -709,8 +702,9 @@ print_install "Menginstall Fail2ban"
 
 # Instal DDOS Flate
 if [ -d '/usr/local/ddos' ]; then
-	echo; echo; echo "Please un-install the previous version first"
-	exit 0
+	echo; echo; echo "Please un-install the previous version first. Re-installing..."
+	rm -rf /usr/local/ddos
+	mkdir /usr/local/ddos
 else
 	mkdir /usr/local/ddos
 fi
@@ -939,10 +933,10 @@ clear
     base_package
     make_folder_xray
     pasang_domain
-    password_default
+    # password_default dihapus - fungsi tidak ditemukan di script
     pasang_ssl
     install_xray
-    ssh
+    setup_ssh
     udp_mini
     ssh_slow
     ins_udpSSH
